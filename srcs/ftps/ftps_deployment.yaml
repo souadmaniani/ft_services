@@ -1,0 +1,102 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+spec:
+  selector:
+    app: ftps-label
+  ports:
+    - name: port-command
+      protocol: TCP
+      port: 21
+      nodePort: 21
+    - name: port1
+      protocol: TCP
+      port: 30000
+      nodePort: 30000
+    - name: port2
+      protocol: TCP
+      port: 30001
+      nodePort: 30001
+    - name: port3
+      protocol: TCP
+      port: 30002
+      nodePort: 30002
+    - name: port4
+      protocol: TCP
+      port: 30003
+      nodePort: 30003
+    - name: port5
+      protocol: TCP
+      port: 30004
+      nodePort: 30004
+  type: NodePort
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: total-volume
+spec:
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: ftps-pvc
+spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftps-label
+  template:
+    metadata:
+      labels:
+        app: ftps-label
+    spec:
+      restartPolicy: Always
+      volumes:
+      - name: total-volume
+        persistentVolumeClaim:
+          claimName: ftps-pvc
+      containers:
+      - name: ftps
+        image: my_ftps
+        imagePullPolicy: Never
+        ports:
+          # port 21 for command channel
+          # port 30000 for data channel
+        - containerPort: 21
+        - containerPort: 30000
+        - containerPort: 30001
+        - containerPort: 30002
+        - containerPort: 30003
+        - containerPort: 30004
+          protocol: TCP
+          name: "ftp-server"
+        volumeMounts:
+        - mountPath: "/home/ftpd"
+          name: total-volume
+        # env:
+        # - name: FTP_USER
+        #   value: "ftpd"
+        # - name: FTP_PASS
+        #   value: "1234"
+        

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx-label
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+    - name: https
+      protocol: TCP
+      port: 443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-ssh
+spec:
+  selector:
+    app: nginx-label
+  ports:
+    - name: https
+      protocol: TCP
+      port: 222
+      nodePort: 22
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-label
+  template:
+    metadata:
+      labels:
+        app: nginx-label
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: nginx
+        image: my_nginx
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        - containerPort: 22
