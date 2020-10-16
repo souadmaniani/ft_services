@@ -10,28 +10,22 @@ spec:
     - name: port-command
       protocol: TCP
       port: 21
-      nodePort: 21
     - name: port1
       protocol: TCP
-      port: 30000
-      nodePort: 30000
+      port: 30000  
     - name: port2
       protocol: TCP
       port: 30001
-      nodePort: 30001
     - name: port3
       protocol: TCP
-      port: 30002
-      nodePort: 30002
+      port: 30002 
     - name: port4
       protocol: TCP
-      port: 30003
-      nodePort: 30003
+      port: 30003 
     - name: port5
       protocol: TCP
       port: 30004
-      nodePort: 30004
-  type: NodePort
+  type: LoadBalancer
 
 ---
 kind: PersistentVolume

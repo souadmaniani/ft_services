@@ -1,10 +1,20 @@
 #!/bin/bash
 minikube delete
-export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox  --extra-config=apiserver.service-node-port-range=1-32000
-minikube addons enable ingress
+export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox
+
 eval $(minikube docker-env)
 
-# docker build srcs/nginx -t my_nginx
+# # install metallb ----> Installation By Manifest
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# # On first install only
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+# # kubectl get pods -n metallb-system
+# # CONFIGURATION of matallb
+# # kubectl get nodes -o wide
+kubectl apply -f srcs/config.yaml
+
+docker build srcs/nginx -t my_nginx
 # sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
 # docker build srcs/ftps -t my_ftps
 # docker build srcs/sql -t my_sql
@@ -14,7 +24,7 @@ eval $(minikube docker-env)
 # docker build srcs/telegraf -t my_telegraf
 # docker build srcs/grafana -t my_grafana
 
-# kubectl create -f srcs/nginx/
+kubectl create -f srcs/nginx/
 # kubectl create -f srcs/ftps/
 # kubectl create -f srcs/sql/
 # kubectl create -f srcs/phpmyadmin/
@@ -22,5 +32,10 @@ eval $(minikube docker-env)
 # kubectl create -f srcs/influxdb 
 # kubectl create -f srcs/telegraf
 # kubectl create  -f srcs/grafana
-# open http://$(minikube ip)
+open http://$(minikube ip)
 # minikube service list
+
+# Note: If you are running your service on Minikube, you can find the assigned IP address and port with:
+# minikube service nginx --url
+
+# https://airbrake.io/blog/http-errors/307-temporary-redirect

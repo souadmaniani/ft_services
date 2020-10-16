@@ -10,8 +10,7 @@ spec:
       protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 5000
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
