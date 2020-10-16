@@ -5,6 +5,7 @@ export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox
 eval $(minikube docker-env)
 
 # # install metallb ----> Installation By Manifest
+
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 # # On first install only
@@ -12,6 +13,7 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 # # kubectl get pods -n metallb-system
 # # CONFIGURATION of matallb
 # # kubectl get nodes -o wide
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/config.yaml
 kubectl apply -f srcs/config.yaml
 
 docker build srcs/nginx -t my_nginx
