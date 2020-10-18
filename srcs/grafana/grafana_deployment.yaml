@@ -1,6 +1,11 @@
+
+# Grafana est une des références pour la visualisation et la mise en forme de données métriques.
+
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
   name: grafana
 spec:
   selector:

@@ -14,20 +14,21 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 # # CONFIGURATION of matallb
 # # kubectl get nodes -o wide
 sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/config.yaml
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/sql/wordpress_db1.sql
 kubectl apply -f srcs/config.yaml
 
 docker build srcs/nginx -t my_nginx
-# sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
-# docker build srcs/ftps -t my_ftps
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
+docker build srcs/ftps -t my_ftps
 # docker build srcs/sql -t my_sql
-# docker build srcs/wordpress -t my_phpmyadmin
+# docker build srcs/phpmyadmin -t my_phpmyadmin
 # docker build srcs/wordpress -t my_wordpress
 # docker build srcs/influxdb -t my_influxdb
 # docker build srcs/telegraf -t my_telegraf
 # docker build srcs/grafana -t my_grafana
 
 kubectl create -f srcs/nginx/
-# kubectl create -f srcs/ftps/
+kubectl create -f srcs/ftps/
 # kubectl create -f srcs/sql/
 # kubectl create -f srcs/phpmyadmin/
 # kubectl create -f srcs/wordpress/
@@ -41,3 +42,8 @@ open http://$(minikube ip)
 # minikube service nginx --url
 
 # https://airbrake.io/blog/http-errors/307-temporary-redirect
+
+# # Obtenir un shell dans un conteneur 
+# kubectl get pods
+# kubectl exec -it wordpress-mysql-774fcf78c8-qqmk6  -- /bin/sh
+# rm -rf ~/Library/'**.42_cache_bak_**'; rm -rf ~/'**.42_cache_bak_**';

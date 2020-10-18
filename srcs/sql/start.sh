@@ -15,4 +15,8 @@ mysql -u root -e "CREATE DATABASE wordpress_db;"
 mysql -u root -e "CREATE USER ${DB_USER}@'%' IDENTIFIED BY '${DB_PASS}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO ${DB_USER}@'%';"
 mysql -u root -e "FLUSH PRIVILEGES;"
-tail -f /dev/null
+
+# Importer une base de donnée
+# mysql -u loginbdd -p nomdelabdd < endroit_ou_se_trouve_fichier_.sql
+mysql -u root wordpress_db < /wordpress_db1.sql
+tail -f /dev/null  

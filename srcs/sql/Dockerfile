@@ -7,6 +7,7 @@ RUN mkdir /run/openrc/
 RUN chmod 777 /run/openrc
 RUN touch /run/openrc/softlevel
 COPY mariadb-server.cnf /etc/my.cnf.d/
+COPY wordpress_db1.sql /
 COPY start.sh /
 ENTRYPOINT sh /start.sh
 EXPOSE 3306
