@@ -15,22 +15,25 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 # # kubectl get nodes -o wide
 sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/config.yaml
 sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/sql/wordpress_db1.sql
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/nginx/default.conf
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/phpmyadmin/config.inc.php
+# sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
 kubectl apply -f srcs/config.yaml
 
 docker build srcs/nginx -t my_nginx
-sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
-docker build srcs/ftps -t my_ftps
-# docker build srcs/sql -t my_sql
-# docker build srcs/phpmyadmin -t my_phpmyadmin
+
+# docker build srcs/ftps -t my_ftps
+docker build srcs/sql -t my_sql
+docker build srcs/phpmyadmin -t my_phpmyadmin
 # docker build srcs/wordpress -t my_wordpress
 # docker build srcs/influxdb -t my_influxdb
 # docker build srcs/telegraf -t my_telegraf
 # docker build srcs/grafana -t my_grafana
 
 kubectl create -f srcs/nginx/
-kubectl create -f srcs/ftps/
-# kubectl create -f srcs/sql/
-# kubectl create -f srcs/phpmyadmin/
+# kubectl create -f srcs/ftps/
+kubectl create -f srcs/sql/
+kubectl create -f srcs/phpmyadmin/
 # kubectl create -f srcs/wordpress/
 # kubectl create -f srcs/influxdb 
 # kubectl create -f srcs/telegraf

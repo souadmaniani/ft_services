@@ -12,21 +12,44 @@ spec:
     - name: port-command
       protocol: TCP
       port: 21
+      targetPort: 21
+    - name: port-data
+      protocol: TCP
+      port: 20
+      targetPort: 20
     - name: port1
       protocol: TCP
-      port: 30000  
+      port: 21001 
     - name: port2
       protocol: TCP
-      port: 30001
+      port: 21001 
     - name: port3
       protocol: TCP
-      port: 30002 
+      port: 21002
     - name: port4
       protocol: TCP
-      port: 30003 
+      port: 21003 
     - name: port5
       protocol: TCP
-      port: 30004
+      port: 21004 
+    - name: port6
+      protocol: TCP
+      port: 21005 
+    - name: port7
+      protocol: TCP
+      port: 21006 
+    - name: port8
+      protocol: TCP
+      port: 21007 
+    - name: port9
+      protocol: TCP
+      port: 21008
+    - name: port10
+      protocol: TCP
+      port: 21009 
+    - name: port11
+      protocol: TCP
+      port: 21010 
   type: LoadBalancer
 
 ---
@@ -78,13 +101,20 @@ spec:
         imagePullPolicy: Never
         ports:
           # port 21 for command channel
-          # port 30000 for data channel
+          # port 10090 for data channel
+        - containerPort: 20
         - containerPort: 21
-        - containerPort: 30000
-        - containerPort: 30001
-        - containerPort: 30002
-        - containerPort: 30003
-        - containerPort: 30004
+        - containerPort: 21001 
+        - containerPort: 21001 
+        - containerPort: 21002 
+        - containerPort: 21003 
+        - containerPort: 21004 
+        - containerPort: 21005 
+        - containerPort: 21006 
+        - containerPort: 21007
+        - containerPort: 21008 
+        - containerPort: 21009 
+        - containerPort: 21010 
           protocol: TCP
           name: "ftp-server"
         volumeMounts:
