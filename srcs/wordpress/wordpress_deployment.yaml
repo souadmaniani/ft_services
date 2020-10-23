@@ -12,19 +12,23 @@ spec:
       protocol: TCP
       port: 5050
       targetPort: 5050
+    - name: port-nginx
+      protocol: TCP
+      port: 80
+      targetPort: 80
   type: LoadBalancer
 ---
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-    name: wp-pvc
-spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 6Gi
----
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#     name: wp-pvc
+# spec:
+#     accessModes:
+#       - ReadWriteOnce
+#     resources:
+#       requests:
+#         storage: 6Gi
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,10 +46,10 @@ spec:
       restartPolicy: Always
       # les volumes à fournir au Pod (le champ .spec.volumes)
       #  et où les monter dans les conteneurs (le champ .spec.containers.volumeMounts).
-      volumes:
-      - name: wordpress-persistent-storage
-        persistentVolumeClaim:
-          claimName: wp-pvc
+      # volumes:
+      # - name: wordpress-persistent-storage
+      #   persistentVolumeClaim:
+      #     claimName: wp-pvc
       containers:
       - name: wordpress
         image: my_wordpress
@@ -59,11 +63,10 @@ spec:
           value : souad
         ports:
         - containerPort: 5050
-          protocol: TCP
-          name: wordpress
-        volumeMounts:
-        - mountPath: "/var/www/localhost/htdocs/wordpress"
-          name: wordpress-persistent-storage
+        - containerPort: 80
+        # volumeMounts:
+        # - mountPath: "/var/www/localhost/htdocs/wordpress"
+        #   name: wordpress-persistent-storage
 
 # Premièrement, lorsqu'un conteneur plante, kubelet va le redémarrer mais les fichiers
 # seront perdus - le conteneur démarre avec un état propre. Deuxièmement, lorsque plusieurs

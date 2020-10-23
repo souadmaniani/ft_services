@@ -1,31 +1,33 @@
 #!/bin/bash
 minikube delete
 export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox
-
+sleep 2
 eval $(minikube docker-env)
+sleep 2
 
 # # install metallb ----> Installation By Manifest
-
+# kubectl delete namespace metallb-system 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+sleep 5
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 # # On first install only
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 # # kubectl get pods -n metallb-system
 # # CONFIGURATION of matallb
 # # kubectl get nodes -o wide
-sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/config.yaml
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/config.yaml 
 sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/sql/wordpress_db1.sql
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/phpmyadmin/default.conf
+sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/wordpress/default.conf
 sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/nginx/default.conf
-sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/phpmyadmin/config.inc.php
 # sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
-kubectl apply -f srcs/config.yaml
+kubectl create -f srcs/config.yaml
 
 docker build srcs/nginx -t my_nginx
-
 # docker build srcs/ftps -t my_ftps
 docker build srcs/sql -t my_sql
 docker build srcs/phpmyadmin -t my_phpmyadmin
-# docker build srcs/wordpress -t my_wordpress
+docker build srcs/wordpress -t my_wordpress
 # docker build srcs/influxdb -t my_influxdb
 # docker build srcs/telegraf -t my_telegraf
 # docker build srcs/grafana -t my_grafana
@@ -34,7 +36,7 @@ kubectl create -f srcs/nginx/
 # kubectl create -f srcs/ftps/
 kubectl create -f srcs/sql/
 kubectl create -f srcs/phpmyadmin/
-# kubectl create -f srcs/wordpress/
+kubectl create -f srcs/wordpress/
 # kubectl create -f srcs/influxdb 
 # kubectl create -f srcs/telegraf
 # kubectl create  -f srcs/grafana
