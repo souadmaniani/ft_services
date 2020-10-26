@@ -14,6 +14,8 @@ RUN chmod 777 /run/openrc
 RUN touch /run/openrc/softlevel
 RUN rc-status
 RUN echo "<h5>Welcome to nginx!!!</h5>" > /var/www/localhost/htdocs/index.html
+# default – Used if no runlevel is specified. (This is generally the runlevel 
+# you want to add services to.)
 RUN rc-update add nginx default
 RUN rc-update add php-fpm7 default
 COPY www.conf /etc/php7/php-fpm.d/www.conf

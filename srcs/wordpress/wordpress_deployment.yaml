@@ -12,10 +12,6 @@ spec:
       protocol: TCP
       port: 5050
       targetPort: 5050
-    - name: port-nginx
-      protocol: TCP
-      port: 80
-      targetPort: 80
   type: LoadBalancer
 ---
 # kind: PersistentVolumeClaim
@@ -63,7 +59,6 @@ spec:
           value : souad
         ports:
         - containerPort: 5050
-        - containerPort: 80
         # volumeMounts:
         # - mountPath: "/var/www/localhost/htdocs/wordpress"
         #   name: wordpress-persistent-storage
