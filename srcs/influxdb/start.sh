@@ -1,7 +1,8 @@
 #!/bin/bash
 
-chown -R influxdb:influxdb /var/lib/influxdb
-influxd &
+# rc-service influxdb start
 influx -execute="CREATE DATABASE influxdb_db;"
 influx -execute="CREATE USER souad WITH PASSWORD 'souad' WITH ALL PRIVILEGES;"
-tail -f /dev/null
+# exec /usr/bin/telegraf
+supervisord --nodaemon --configuration /etc/supervisord.conf
+

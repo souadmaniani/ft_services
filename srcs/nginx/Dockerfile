@@ -18,13 +18,17 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 # RUN rc-update add sshd default
 RUN rc-status
 # RUN rc-status
-RUN adduser -D souad
-RUN echo souad:souad | chpasswd
-COPY start.sh /start.sh
+RUN adduser -D souad \
+&& echo souad:souad | chpasswd \
+&& echo "root:root" | chpasswd \
+&& mkdir /root/.ssh \
+&& chmod 0700 /root/.ssh \
+&& ssh-keygen -A
+# COPY start.sh /start.sh
 RUN apk add supervisor
 RUN mkdir -p /var/log/supervisor
 RUN rm /etc/supervisord.conf
 COPY supervisord.conf /etc/supervisord.conf
-# ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
-ENTRYPOINT sh start.sh
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+# ENTRYPOINT sh start.sh
 EXPOSE 80 443 22

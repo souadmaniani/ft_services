@@ -16,14 +16,20 @@ RUN rc-status
 RUN echo "<h5>Welcome to nginx!!!</h5>" > /var/www/localhost/htdocs/index.html
 # default – Used if no runlevel is specified. (This is generally the runlevel 
 # you want to add services to.)
-RUN rc-update add nginx default
-RUN rc-update add php-fpm7 default
+# RUN rc-update add nginx default
+# RUN rc-update add php-fpm7 default
+RUN mkdir -p /run/nginx
+RUN mkdir -p /var/run/php
+RUN mkdir -p /var/log/php-fpm
+
 COPY www.conf /etc/php7/php-fpm.d/www.conf
 COPY setup.sh /setup.sh
 RUN sh /setup.sh
 RUN rm /usr/share/webapps/wordpress/wp-config-sample.php
 COPY wp-config.php /usr/share/webapps/wordpress
 # RUN mv /usr/share/webapps/wordpress/* /var/www/localhost/htdocs
-COPY start.sh /start.sh
-ENTRYPOINT sh /start.sh
+RUN apk add supervisor
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
 EXPOSE 5050

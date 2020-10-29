@@ -12,10 +12,6 @@ spec:
       protocol: TCP
       port: 5000
       targetPort: 5000
-    # - name: port-nginx
-    #   protocol: TCP
-    #   port: 80
-    #   targetPort: 80
   type: LoadBalancer
 ---
 apiVersion: apps/v1
@@ -39,4 +35,3 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
-        - containerPort: 80
