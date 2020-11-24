@@ -32,7 +32,14 @@ spec:
                imagePullPolicy: Never
                image: my_influxdb
                ports:
-                - containerPort: 8086
+               - containerPort: 8086
+               livenessProbe:
+                exec:
+                  command:
+                  - sh
+                  - /script.sh
+                initialDelaySeconds: 5
+                periodSeconds: 5
                volumeMounts:
                 - mountPath: "/var/run/docker.sock"
                   name: telegraf-storage

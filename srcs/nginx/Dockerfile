@@ -24,11 +24,14 @@ RUN adduser -D souad \
 && mkdir /root/.ssh \
 && chmod 0700 /root/.ssh \
 && ssh-keygen -A
-# COPY start.sh /start.sh
-RUN apk add supervisor
-RUN mkdir -p /var/log/supervisor
-RUN rm /etc/supervisord.conf
-COPY supervisord.conf /etc/supervisord.conf
-ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
-# ENTRYPOINT sh start.sh
+COPY start.sh /start.sh
+COPY script.sh /script.sh
+RUN chmod 777 /start.sh
+RUN chmod 777 /script.sh
+# RUN apk add supervisor
+# RUN mkdir -p /var/log/supervisor
+# RUN rm /etc/supervisord.conf
+# COPY supervisord.conf /etc/supervisord.conf
+# ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+ENTRYPOINT sh start.sh
 EXPOSE 80 443 22

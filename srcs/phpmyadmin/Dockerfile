@@ -27,12 +27,13 @@ COPY www.conf /etc/php7/php-fpm.d/www.conf
 # RUN rc-service nginx start
 COPY setup.sh /setup.sh
 RUN sh /setup.sh
+COPY script.sh /script.sh
 # RUN mv /usr/share/webapps/phpmyadmin/* /var/www/localhost/htdocs
 RUN rm /usr/share/webapps/phpmyadmin/config.sample.inc.php 
 COPY config.inc.php /usr/share/webapps/phpmyadmin
-RUN apk add supervisor
-RUN mkdir -p /var/log/supervisor
-COPY supervisord.conf /etc/
+# RUN apk add supervisor
+# RUN mkdir -p /var/log/supervisor
+# COPY supervisord.conf /etc/
 COPY start.sh /
 ENTRYPOINT sh /start.sh
 EXPOSE 5000

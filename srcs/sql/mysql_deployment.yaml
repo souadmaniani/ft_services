@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress-mysql
+  name: mysql
 spec:
   selector:
     app: mysql
@@ -25,7 +25,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress-mysql
+  name: mysql
 spec:
   replicas: 1
   selector:
@@ -42,7 +42,7 @@ spec:
         persistentVolumeClaim:
           claimName: mysql-pvc
       containers:
-      - name:  wordpress-mysql
+      - name:  mysql
         image: my_sql
         imagePullPolicy: Never
         env:
@@ -52,6 +52,13 @@ spec:
         - containerPort: 3306
           protocol: TCP
           name: mysql
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /script.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         volumeMounts:
         - mountPath: "/var/lib/mysql"
           name: mysql-persistent-storage

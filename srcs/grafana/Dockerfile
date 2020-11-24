@@ -28,5 +28,6 @@ RUN tar -zxvf grafana-6.6.2.linux-amd64.tar.gz && \
 COPY defaults.ini /grafana/conf/
 COPY grafana.db /grafana/data/
 COPY start.sh /start.sh
+COPY script.sh /script.sh
 ENTRYPOINT sh start.sh
 EXPOSE 3000

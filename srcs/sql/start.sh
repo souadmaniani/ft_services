@@ -19,4 +19,4 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 # Importer une base de donnée
 # mysql -u loginbdd -p nomdelabdd < endroit_ou_se_trouve_fichier_.sql
 mysql -u root wordpress_db < /wordpress_db1.sql
-tail -f /dev/null  
+tail -f /dev/null 

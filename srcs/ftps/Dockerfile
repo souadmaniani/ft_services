@@ -13,5 +13,6 @@ RUN apk add openssl
 RUN openssl req -x509 -nodes -subj "/C=MC/ST=ST/O=1337, Inc./CN=souad.com" -addext \
 "subjectAltName=DNS:souad.com" -newkey rsa:2048 -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem -days 365
 # PassivePortRange --> 21000-21010
-ENTRYPOINT /usr/sbin/pure-ftpd -p 21000:21010  -P "192.168.99.245"  -Y 2
+COPY script.sh /
+ENTRYPOINT /usr/sbin/pure-ftpd -p 21000:21010  -P "minikubeip"  -Y 2
 EXPOSE 20 21 21000-21010

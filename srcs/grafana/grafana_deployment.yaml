@@ -40,3 +40,10 @@ spec:
         - containerPort: 3000
           protocol: TCP
           name: grafana
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /script.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5

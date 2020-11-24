@@ -24,9 +24,10 @@ touch /run/openrc/softlevel
 COPY influxdb.conf etc/influxdb/
 COPY telegraf.conf /etc/telegraf/
 COPY start.sh /
-RUN apk add supervisor
-RUN mkdir -p /var/log/supervisor
-COPY supervisord.conf /etc/
+COPY script.sh /
+# RUN apk add supervisor
+# RUN mkdir -p /var/log/supervisor
+# COPY supervisord.conf /etc/
 VOLUME [ "/var/run/docker.sock" ]
-ENTRYPOINT [ "sh", "/start.sh" ]
+ENTRYPOINT sh /start.sh
 EXPOSE 8086

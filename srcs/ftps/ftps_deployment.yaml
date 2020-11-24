@@ -117,6 +117,14 @@ spec:
         - containerPort: 21010 
           protocol: TCP
           name: "ftp-server"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /script.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
         volumeMounts:
         - mountPath: "/home/ftpd"
           name: total-volume

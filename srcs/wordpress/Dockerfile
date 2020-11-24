@@ -25,11 +25,13 @@ RUN mkdir -p /var/log/php-fpm
 COPY www.conf /etc/php7/php-fpm.d/www.conf
 COPY setup.sh /setup.sh
 RUN sh /setup.sh
+COPY script.sh /script.sh
 RUN rm /usr/share/webapps/wordpress/wp-config-sample.php
 COPY wp-config.php /usr/share/webapps/wordpress
 # RUN mv /usr/share/webapps/wordpress/* /var/www/localhost/htdocs
-RUN apk add supervisor
-RUN mkdir -p /var/log/supervisor
-COPY supervisord.conf /etc/
-ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+# RUN apk add supervisor
+# RUN mkdir -p /var/log/supervisor
+# COPY supervisord.conf /etc/
+COPY start.sh /
+ENTRYPOINT sh start.sh
 EXPOSE 5050

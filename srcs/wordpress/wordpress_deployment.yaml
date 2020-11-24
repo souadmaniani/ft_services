@@ -54,11 +54,18 @@ spec:
         # variable sets the name of the MySQL Service defined 
         env:
         - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
+          value: mysql
         - name: WORDPRESS_DB_PASSWORD
           value : souad
         ports:
         - containerPort: 5050
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /script.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         # volumeMounts:
         # - mountPath: "/var/www/localhost/htdocs/wordpress"
         #   name: wordpress-persistent-storage
