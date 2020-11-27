@@ -29,7 +29,7 @@ $cfg['Servers'][$i]['auth_type'] = 'cookie';
 $cfg['Servers'][$i]['host'] = '10.96.0.2';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
-$cfg['PmaAbsoluteUri'] = 'https://minikubeip/phpmyadmin';
+// $cfg['PmaAbsoluteUri'] = 'https://minikubeip/phpmyadmin';
 /**
  * phpMyAdmin configuration storage settings.
  */

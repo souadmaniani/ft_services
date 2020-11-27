@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # # # start minikube # # #
-# export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox
+export MINIKUBE_HOME=~/goinfre/ && minikube start --vm-driver=virtualbox
 
 eval $(minikube docker-env)
 
@@ -25,21 +25,21 @@ sed -i '' "s/minikubeip/$(minikube ip)/g" srcs/ftps/Dockerfile
 
 # # # build images # # #
 docker build srcs/nginx -t my_nginx
-# docker build srcs/ftps -t my_ftps
+docker build srcs/ftps -t my_ftps
 docker build srcs/sql -t my_sql
 docker build srcs/phpmyadmin -t my_phpmyadmin
 docker build srcs/wordpress -t my_wordpress
-# docker build srcs/influxdb -t my_influxdb
-# docker build srcs/grafana -t my_grafana
+docker build srcs/influxdb -t my_influxdb
+docker build srcs/grafana -t my_grafana
 
 # # # create containers # # #
 kubectl apply -f srcs/nginx/
-# kubectl create -f srcs/ftps/
-kubectl create -f srcs/sql/
-kubectl create -f srcs/phpmyadmin/
-kubectl create -f srcs/wordpress/
-# kubectl create -f srcs/influxdb 
-# kubectl create  -f srcs/grafana
+kubectl apply -f srcs/ftps/
+kubectl apply -f srcs/sql/
+kubectl apply -f srcs/phpmyadmin/
+kubectl apply -f srcs/wordpress/
+kubectl apply -f srcs/influxdb 
+kubectl apply  -f srcs/grafana
 
 open http://$(minikube ip)
 minikube dashboard
